@@ -1146,6 +1146,9 @@ GRANT EXECUTE ON FUNCTION get_room_state(TEXT, TEXT)                 TO anon, au
 GRANT EXECUTE ON FUNCTION push_room_state(TEXT, TEXT, JSONB)         TO anon, authenticated;
 GRANT EXECUTE ON FUNCTION rotate_room_secret(TEXT, TEXT, TEXT)       TO anon, authenticated;
 
+-- Перезагрузить кеш схемы PostgREST, чтобы новые функции стали доступны немедленно
+SELECT pg_notify('pgrst', 'reload schema');
+
 
 -- ── list_pending_requests ────────────────────────────────────
 CREATE OR REPLACE FUNCTION list_pending_requests(

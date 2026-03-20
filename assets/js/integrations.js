@@ -224,7 +224,10 @@ REVOKE ALL ON FUNCTION rotate_room_secret(TEXT, TEXT, TEXT) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION create_room(TEXT, TEXT, JSONB) TO anon, authenticated;
 GRANT EXECUTE ON FUNCTION get_room_state(TEXT, TEXT) TO anon, authenticated;
 GRANT EXECUTE ON FUNCTION push_room_state(TEXT, TEXT, JSONB) TO anon, authenticated;
-GRANT EXECUTE ON FUNCTION rotate_room_secret(TEXT, TEXT, TEXT) TO anon, authenticated;`;
+GRANT EXECUTE ON FUNCTION rotate_room_secret(TEXT, TEXT, TEXT) TO anon, authenticated;
+
+-- Перезагрузить кеш схемы PostgREST, чтобы новые функции стали доступны немедленно
+SELECT pg_notify('pgrst', 'reload schema');`;
 
 function sbNormalizeRoomCode(value) {
   return (value || '').toUpperCase().trim();
@@ -466,7 +469,7 @@ async function sbConnect() {
   } catch(e) {
     sbSetStatus('offline');
     const msg = e.message || '';
-    if (msg.toLowerCase().includes('fetch') || msg.toLowerCase().includes('network') || msg.toLowerCase().includes('failed') || msg.toLowerCase().includes('functions')) {
+    if (msg.toLowerCase().includes('fetch') || msg.toLowerCase().includes('network') || msg.toLowerCase().includes('failed') || msg.toLowerCase().includes('functions') || msg.toLowerCase().includes('schema cache') || msg.toLowerCase().includes('could not find')) {
       showToast('❌ Нет соединения или не применена миграция для комнат');
     } else {
       showToast('❌ Ошибка: ' + msg);
