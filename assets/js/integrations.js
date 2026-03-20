@@ -835,7 +835,7 @@ function renderSupabaseCard() {
 
     <details class="sb-sql-block">
       <summary>🛠 SQL для безопасной комнатной синхронизации</summary>
-      <div class="sb-sql-hint">Откройте <a href="https://supabase.com/dashboard/project/rscctyllkqcpxkxrveoz/sql/new" target="_blank" style="color:#3ecf8e">SQL Editor</a>, вставьте блок ниже или запустите обновлённый supabase_migration.sql целиком.</div>
+      <div class="sb-sql-hint">Примените блок ниже в SQL-консоли вашего PostgreSQL, или запустите <code>supabase_migration.sql</code> целиком:<br><code>sudo -u postgres psql &lt;DB_NAME&gt; &lt; supabase_migration.sql</code></div>
       <pre class="sb-sql-pre">${esc(SB_SYNC_SQL)}</pre>
       <button class="btn-sb-sql-copy" onclick="sbCopySql()">📋 Копировать SQL</button>
     </details>
